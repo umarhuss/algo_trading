@@ -23,3 +23,15 @@ def sma(prices, time):
         left += 1
 
     return sma
+
+def daily_returns(prices):
+    length = len(prices)
+    returns = [0]* length
+
+    for i in range(1,length):
+        current_rt = (prices[i] - prices[i-1]) / prices[i-1]
+        returns[i] = current_rt
+
+    return returns
+
+
