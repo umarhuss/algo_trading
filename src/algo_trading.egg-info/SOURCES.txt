@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+src/algo_trading/__init__.py
+src/algo_trading/backtester.py
+src/algo_trading/indicators.py
+src/algo_trading/strategy.py
+src/algo_trading.egg-info/PKG-INFO
+src/algo_trading.egg-info/SOURCES.txt
+src/algo_trading.egg-info/dependency_links.txt
+src/algo_trading.egg-info/top_level.txt

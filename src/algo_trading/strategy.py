@@ -1,4 +1,4 @@
-from indicators import sma
+from .indicators import sma
 
 
 class SMA_Crossover:
