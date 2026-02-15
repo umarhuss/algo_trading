@@ -1,6 +1,7 @@
-from algo_trading.indicators import sma, daily_returns
 import pytest
 from pytest import approx
+
+from algo_trading.indicators import daily_returns, sma
 
 
 def test_sma_alignment_and_values_window_3():
@@ -12,13 +13,13 @@ def test_sma_alignment_and_values_window_3():
     # output aligned to input length
     assert len(result) == len(prices)
 
-    # first window-1 values are None 
+    # first window-1 values are None
     assert result[: window - 1] == [None] * (window - 1)
 
     # known-answer tail (only where SMA exists)
     expected_tail = [
-        (100 + 102 + 101) / 3,     # index 2
-        (102 + 101 + 105) / 3,     # index 3
+        (100 + 102 + 101) / 3,  # index 2
+        (102 + 101 + 105) / 3,  # index 3
     ]
     assert result[window - 1 :] == pytest.approx(expected_tail)
 
@@ -64,3 +65,39 @@ def test_sma_constant_prices_stays_constant_after_warmup():
     assert result[window - 1 :] == pytest.approx([10, 10, 10, 10])
 
 
+def test_daily_returns_alignment():
+    prices = [100, 102, 101, 105]
+
+    results = daily_returns(prices)
+
+    assert len(results) == len(prices)
+    assert results[:1] == [0]
+
+    expected_tail = [
+        (102 - 100) / 100,
+        (101 - 102) / 102,
+        (105 - 101) / 101
+    ]
+
+    assert results[1:] == pytest.approx(expected_tail)
+
+def test_daily_ret_empty_prices():
+    prices = []
+
+    results = daily_returns(prices)
+
+    assert results == []
+
+def test_daily_ret_single_price():
+    prices = [100]
+
+    results = daily_returns(prices)
+
+    assert results == [0]
+
+def test_daily_ret_constant_prices():
+    prices = [100,100,100,100,100]
+
+    results = daily_returns(prices)
+
+    assert results == [0]*len(prices)
