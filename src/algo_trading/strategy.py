@@ -1,4 +1,4 @@
-from .indicators import sma
+from algo_trading.indicators import sma
 
 
 class SMA_Crossover:
@@ -45,6 +45,7 @@ class SMA_Crossover:
 
 # test = SMA_Crossover()
 # print(test.positions(prices))
+# print(len(test.positions(prices)))
 
 
 

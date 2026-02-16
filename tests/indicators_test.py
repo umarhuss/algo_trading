@@ -73,13 +73,10 @@ def test_daily_returns_alignment():
     assert len(results) == len(prices)
     assert results[:1] == [0]
 
-    expected_tail = [
-        (102 - 100) / 100,
-        (101 - 102) / 102,
-        (105 - 101) / 101
-    ]
+    expected_tail = [(102 - 100) / 100, (101 - 102) / 102, (105 - 101) / 101]
 
     assert results[1:] == pytest.approx(expected_tail)
+
 
 def test_daily_ret_empty_prices():
     prices = []
@@ -88,6 +85,7 @@ def test_daily_ret_empty_prices():
 
     assert results == []
 
+
 def test_daily_ret_single_price():
     prices = [100]
 
@@ -95,9 +93,10 @@ def test_daily_ret_single_price():
 
     assert results == [0]
 
+
 def test_daily_ret_constant_prices():
-    prices = [100,100,100,100,100]
+    prices = [100, 100, 100, 100, 100]
 
     results = daily_returns(prices)
 
-    assert results == [0]*len(prices)
+    assert results == [0] * len(prices)
