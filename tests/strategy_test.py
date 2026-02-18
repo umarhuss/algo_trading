@@ -19,10 +19,26 @@ def test_sma_strategy_alignment():
    assert results[test.long_window:] == expected_tail
 
 def test_sma_strategy_empty_list():
-   pass
+   prices = []
+   test = SMA_Crossover()
+
+   with pytest.raises(ValueError, match=r"Empty List"):
+        test.positions(prices)
+
 
 def test_sma_strategy_constant_prices():
-   pass
+      prices = [200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
+                200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
+                200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
+                200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
+                200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
+                200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
+               ]
+
+      test = SMA_Crossover()
+      results = test.positions(prices)
+
+      assert results == [0]*len(prices)
 
 
 

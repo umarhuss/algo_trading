@@ -8,6 +8,9 @@ class SMA_Crossover:
 
     def positions(self, prices):
         n = len(prices)
+
+        if n == 0:
+            raise ValueError('Empty List')
         # call the sma function for the short position
         short_sma = sma(prices, self.short_window)
         long_sma = sma(prices,self.long_window)
