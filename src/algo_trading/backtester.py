@@ -1,5 +1,5 @@
-from .indicators import daily_returns
-from .strategy import SMA_Crossover
+from algo_trading.indicators import daily_returns
+from algo_trading.strategy import SMA_Crossover
 from dataclasses import dataclass
 
 
