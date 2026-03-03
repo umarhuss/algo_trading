@@ -6,13 +6,36 @@ public class Worker(ILogger<Worker> logger) : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
+            // Create the time variables
+            DateTime now = DateTime.UtcNow;
+            DateTime nextRun = ComputeNextRun(now);
+            TimeSpan delay = nextRun - now;
+
+            // Ensure there is logging to the console so i know what is happening
             if (logger.IsEnabled(LogLevel.Information))
             {
-                logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                logger.LogInformation("Current Time: {time}", now);
+                logger.LogInformation("Next run is: {time}", nextRun);
+                logger.LogInformation("Current delay is: {time}", delay);
             }
-            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+
+            // Clamp the delay so if its ever negative the time span is changed to 0 so it executes right away
+            if (delay < TimeSpan.Zero)
+            {
+                delay = TimeSpan.Zero;
+            }
+
+            // Call the task
+            await Task.Delay(delay, stoppingToken);
+
+            // While the task is happening log what is taking place
+            logger.LogInformation("Ingestion of Data is in progress ....");
+            logger.LogInformation("Ingestion completed");
+
         }
     }
+
+    protected
 
     private static DateTime ComputeNextRun()
     {
