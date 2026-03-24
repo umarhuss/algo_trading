@@ -16,7 +16,5 @@ namespace FxDataIngestor
 
       public Instrument? Instrument { get; set; }
 
-
-
     }
 }

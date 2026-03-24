@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FxDataIngestor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8747c899791ac1f66d35f38e0d16bccb0f320618")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3bab25439b867878a510002a7a4df831b8753783")]
 [assembly: System.Reflection.AssemblyProductAttribute("FxDataIngestor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FxDataIngestor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
