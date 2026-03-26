@@ -1,6 +1,4 @@
-// HttpClient lifecycle management best practices:
-// https://learn.microsoft.com/dotnet/fundamentals/networking/http/httpclient-guidelines#recommended-use
-
+using System.Text.Json;
 namespace FxDataIngestor;
 
 public class FrankfurterClient
@@ -16,11 +14,33 @@ public class FrankfurterClient
         _myHttp.BaseAddress = new Uri("https://api.frankfurter.dev/v1/");
     }
 
+    // Create an C# object for the json data
+    public class FxData
+    {
+        public decimal Amount {get; set;}
+        public string? Base {get; set;}
+        public DateOnly Date {get; set;}
+        // new means to set a new dictionary right away to hold the information
+        public Dictionary<string, decimal> Rates {get; set;} = new();
+
+    }
+
     // Create async function to get data and returns a string
-    public async Task<string> GetLatestData(string fromCurrency, string toCurrency)
+    public async Task<FxData> GetLatestData(string fromCurrency, string toCurrency)
     {
         // Create get request an save it as a string
-        return await _myHttp.GetStringAsync($"latest?from={fromCurrency}&to={toCurrency}");
+        var jsonData = await _myHttp.GetStringAsync($"latest?from={fromCurrency}&to={toCurrency}");
+
+        // Ensure the name casing is standardised
+        var options = new JsonSerializerOptions();
+        options.PropertyNameCaseInsensitive = true;
+
+        // Deserialize the string to an object
+        FxData? data = JsonSerializer.Deserialize<FxData>(jsonData,options);
+
+        // this is specific to nulls if its null throw that any other case try/catch block
+        return data ?? throw new Exception("Failed to deserialize response");
+
     }
 
 }
