@@ -18,12 +18,11 @@ namespace FxDataIngestor
         // Override the primary key for prices so it is a composite key instead
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Tell EF-core what are the keys 
+            // Tell EF-core what are the keys
             modelBuilder.Entity<Price>().HasKey(p => new{p.InstrumentId,p.Timeframe, p.BarTime});
         }
 
     }
 
 }
-
 

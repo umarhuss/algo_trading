@@ -10,7 +10,7 @@ namespace FxDataIngestor
       [Required]
       public string Timeframe { get; set; } = string.Empty;
 
-      public DateTime BarTime { get; set; }
+      public DateOnly BarTime { get; set; }
 
       public decimal Close {get; set;}
 
