@@ -7,11 +7,13 @@ public class PriceIngestionService
     // dependency injection
     private readonly FrankfurterClient _client;
     private readonly FxDbContext _context;
+    private readonly ILogger<PriceIngestionService> _logger;
 
-    public PriceIngestionService(FrankfurterClient client, FxDbContext context)
+    public PriceIngestionService(ILogger<PriceIngestionService> logger,FrankfurterClient client, FxDbContext context)
     {
         _client = client;
         _context = context;
+        _logger = logger;
     }
 
     // Create function to call the api and the db
@@ -51,7 +53,7 @@ public class PriceIngestionService
             instrumentId = symbolCheck.Id;
 
         }
-        //
+        // Create new price object
          var newPrice = new Price
             {
                 InstrumentId = instrumentId,
@@ -59,8 +61,20 @@ public class PriceIngestionService
                 BarTime = currFxData.Date,
                 Close = currFxData.Rates[toCurrency],
             };
+        // Check if new price object is already in price
+        var priceCheck = await _context.Prices.FirstOrDefaultAsync(i => i.InstrumentId == instrumentId && i.BarTime == currFxData.Date && i.Timeframe == "1D");
 
+        if (priceCheck == null)
+        {
             _context.Prices.Add(newPrice);
             await _context.SaveChangesAsync();
+        }
+        else
+        {
+            // Do not add to the database log to the screen
+            _logger.LogInformation("Price already exists, skipping...");
+        }
+
+
     }
 }

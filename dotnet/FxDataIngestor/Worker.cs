@@ -1,11 +1,12 @@
 namespace FxDataIngestor;
 
-public class Worker(ILogger<Worker> logger) : BackgroundService
+public class Worker(ILogger<Worker> logger, PriceIngestionService ingestionService) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
-        {
+            while (!stoppingToken.IsCancellationRequested)
+            {
+
             // Create the time variables
             DateTime now = DateTime.UtcNow;
             DateTime nextRun = ComputeNextRun(now);
@@ -28,9 +29,19 @@ public class Worker(ILogger<Worker> logger) : BackgroundService
             // Call the task
             await Task.Delay(delay, stoppingToken);
 
-            // While the task is happening log what is taking place
-            logger.LogInformation("Ingestion of Data is in progress ....");
-            logger.LogInformation("Ingestion completed");
+             try
+            {
+                // While the task is happening log what is taking place
+                logger.LogInformation("Ingestion of Data is in progress ....");
+                // For now hardcode this later read from json settings more flexible
+                await ingestionService.IngestPriceAsync("USD","GBP");
+                logger.LogInformation("Ingestion completed");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Ingestion failed");
+            }
+
 
         }
     }
@@ -47,7 +58,7 @@ public class Worker(ILogger<Worker> logger) : BackgroundService
     private static DateTime ComputeNextRun(DateTime now)
     {
         // Calculate the time interval for runs
-        TimeSpan interval = new TimeSpan(15,05,00);
+        TimeSpan interval = new TimeSpan(15, 05, 00);
         // Calculate the current day
         DateTime todayTarget = now.Date + interval;
         // Variable for the next day
@@ -65,7 +76,7 @@ public class Worker(ILogger<Worker> logger) : BackgroundService
         }
 
         // While the nextrun is a weekend go to the next day
-        while(nextRun.DayOfWeek == DayOfWeek.Saturday || nextRun.DayOfWeek == DayOfWeek.Sunday)
+        while (nextRun.DayOfWeek == DayOfWeek.Saturday || nextRun.DayOfWeek == DayOfWeek.Sunday)
         {
             nextRun = nextRun.AddDays(1);
         }

@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotnet", "dotnet", "{71E6E750-85FD-B5BC-4321-E01377EC6231}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxDataIngestor", "dotnet\FxDataIngestor\FxDataIngestor.csproj", "{BED11C7D-9CD0-7685-4745-4E00B4C67BFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BED11C7D-9CD0-7685-4745-4E00B4C67BFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BED11C7D-9CD0-7685-4745-4E00B4C67BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BED11C7D-9CD0-7685-4745-4E00B4C67BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BED11C7D-9CD0-7685-4745-4E00B4C67BFF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BED11C7D-9CD0-7685-4745-4E00B4C67BFF} = {71E6E750-85FD-B5BC-4321-E01377EC6231}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {41CA5F61-7EF6-463C-8CDA-B04AE7FE98B6}
+	EndGlobalSection
+EndGlobal

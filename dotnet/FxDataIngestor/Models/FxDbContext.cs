@@ -5,8 +5,8 @@ namespace FxDataIngestor
     // Create class that inherits from the Dbcontext
     public class FxDbContext : DbContext
     {
-        public DbSet<Instrument> Instruments {get; set;}
-        public DbSet<Price> Prices {get; set;}
+        public DbSet<Instrument> Instruments { get; set; }
+        public DbSet<Price> Prices { get; set; }
 
         // Override the configuration to tell the Dbcontext how to connect to the DB
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -19,7 +19,7 @@ namespace FxDataIngestor
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Tell EF-core what are the keys
-            modelBuilder.Entity<Price>().HasKey(p => new{p.InstrumentId,p.Timeframe, p.BarTime});
+            modelBuilder.Entity<Price>().HasKey(p => new { p.InstrumentId, p.Timeframe, p.BarTime });
         }
 
     }
