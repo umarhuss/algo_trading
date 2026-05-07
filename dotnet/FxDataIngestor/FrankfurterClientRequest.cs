@@ -25,6 +25,15 @@ public class FrankfurterClient
 
     }
 
+    // Create a C# object for the historical json data
+    public class HistoricalFxData
+    {
+        public string? Base {get; set;}
+        public DateOnly StartDate {get; set;}
+        public DateOnly EndDate {get; set;}
+        public Dictionary<string, Dictionary<string, decimal>> Rates {get; set;} = new();
+    }
+
     // Create async function to get data and returns a string
     public async Task<FxData> GetLatestData(string fromCurrency, string toCurrency)
     {
@@ -41,6 +50,26 @@ public class FrankfurterClient
         // this is specific to nulls if its null throw that any other case try/catch block
         return data ?? throw new Exception("Failed to deserialize response");
 
+    }
+
+    // Create async function to get historical data
+    public async Task<HistoricalFxData> GetHistoricalData(string fromCurrency, string toCurrency, DateOnly startDate)
+    {
+        // Create get request an save it as a string
+        var jsonData = await _myHttp.GetStringAsync($"{startDate:yyyy-MM-dd}..?from={fromCurrency}&to={toCurrency}");
+
+        // Ensure the name casing is standardised
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+        };
+
+        // Deserialize the string to an object
+        HistoricalFxData? data = JsonSerializer.Deserialize<HistoricalFxData>(jsonData,options);
+
+        // this is specific to nulls if its null throw that any other case try/catch block
+        return data ?? throw new Exception("Failed to deserialize response");
     }
 
 }

@@ -77,4 +77,52 @@ public class PriceIngestionService
 
 
     }
+
+    // Async function to save the historical FX data
+    public async Task HistoricalIngestPriceAsync(string fromCurrency, string toCurrency, DateOnly startDate)
+    {
+        // Get the historical data as an object
+        var hisoricalFxData = await _client.GetHistoricalData(fromCurrency,toCurrency,startDate);
+
+        // Get symbol
+        var currSymbol = $"{fromCurrency}/{toCurrency}";
+        // Check if the symbol is already there
+        var symbolCheck = await _context.Instruments.FirstOrDefaultAsync(i => i.Symbol== currSymbol);
+
+        int instrumentId;
+
+        // The symbol check will either be null or the full instrument row
+        if (symbolCheck == null)
+        {
+            // Create a new instrument object
+            var newInstrument = new Instrument
+            {
+                Symbol = currSymbol,
+                Base = fromCurrency,
+                Quote = toCurrency,
+                Type = "Forex"
+
+            };
+
+            // Insert the instrument into the DB table
+            _context.Instruments.Add(newInstrument);
+            // commit the changes to the DB
+            await _context.SaveChangesAsync();
+            // Set the instrument variable to
+            instrumentId = newInstrument.Id;
+        }
+        else
+        {
+            instrumentId = symbolCheck.Id;
+
+        }
+        // Loop through each of the prices and create a new entry
+        foreach(var entry in hisoricalFxData.Rates)
+        {
+            // Create a new dateonly type
+            DateOnly barTime = DateOnly.Parse(entry.Key);
+            
+        }
+
+    }
 }
