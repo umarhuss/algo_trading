@@ -121,8 +121,32 @@ public class PriceIngestionService
         {
             // Create a new dateonly type
             DateOnly barTime = DateOnly.Parse(entry.Key);
-            
+            // Get the close for that day
+            decimal close = entry.Value[toCurrency];
+
+            // Check if new price object is already in price
+            var priceCheck = await _context.Prices.FirstOrDefaultAsync(i => i.InstrumentId == instrumentId && i.BarTime == barTime && i.Timeframe == "1D");
+
+            if (priceCheck == null)
+            {
+                var newPrice = new Price
+                {
+                    InstrumentId = instrumentId,
+                    Timeframe = "1D",
+                    BarTime = barTime,
+                    Close = close,
+                };
+
+                _context.Prices.Add(newPrice);
+
+            }
+            else
+            {
+                // Do not add to the database log to the screen
+                _logger.LogInformation("Price already exists, skipping...");
+            }
         }
+        await _context.SaveChangesAsync();
 
     }
 }
